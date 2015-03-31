@@ -121,9 +121,9 @@ public class CellularAutomata
         int maxX = this.length, maxY = this.width;
 #endif
         int count = 0;
-        for (int i = -1; i < 2; i++)
+        for (int i = -1; i <= 1; i++)
         {
-            for (int j = -1; j < 2; j++)
+            for (int j = -1; j <= 1; j++)
             {
                 int curX = x + i;
                 int curY = y + j;
