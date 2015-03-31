@@ -1,4 +1,4 @@
-﻿#define UNITY
+﻿//#define UNITY
 
 #if UNITY
 using UnityEngine;
@@ -34,15 +34,12 @@ public class CellularAutomata
         this.length = length;
         this.width = width;
 #endif
-
-        InitializeMap();
     }
 #if UNITY
     public CellularAutomata(Vector2 size)
     {
         this.size = size;
         this.map = new bool[(int)size.x, (int)size.y];
-        InitializeMap();
     }
 #endif
 
@@ -59,7 +56,7 @@ public class CellularAutomata
             for (int y = 0; y < maxY; y++)
             {
 #if UNITY
-            float randomNum = Random.value;
+                float randomNum = Random.value;
 #else
                 Random random = new Random();
                 float randomNum = (float)random.NextDouble();
@@ -71,14 +68,14 @@ public class CellularAutomata
             }
         }
     }
-    public bool[,] DoStep()
+    public void DoStep()
     {
 #if UNITY
         int maxX = (int)this.size.x, maxY = (int)this.size.y;
 #else
         int maxX = this.length, maxY = this.width;
 #endif
-        bool[,] map = new bool[maxX, maxY];
+        bool[,] nMap = new bool[maxX, maxY];
 
         //Loop over each row and column of the map
         for (int x = 0; x < maxX; x++)
@@ -91,11 +88,11 @@ public class CellularAutomata
                 {
                     if (neighbors < deathLimit)
                     {
-                        map[x, y] = false;
+                        nMap[x, y] = false;
                     }
                     else
                     {
-                        map[x, y] = true;
+                        nMap[x, y] = true;
                     }
                 }
                 // If the cell is dead and it has enough neighbors to be born, create it.
@@ -103,16 +100,16 @@ public class CellularAutomata
                 {
                     if (neighbors > birthLimit)
                     {
-                        map[x, y] = true;
+                        nMap[x, y] = true;
                     }
                     else
                     {
-                        map[x, y] = false;
+                        nMap[x, y] = false;
                     }
                 }
             }
         }
-        return map;
+        this.map = nMap;
     }
 
     //Returns the number of cells in a ring around (x,y) that are alive.
